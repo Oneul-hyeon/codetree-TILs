@@ -21,18 +21,20 @@ def target_direction(x, y) :
     return dir
 # 2. 이동 함수 정의
 def move() :
-    global cnt
+    global cnt, information
+    updated_information = []
     # 2-1.
-    for info in list(information.keys()) :
+    for info in information :
         # 2-1-1. 최단 방향 탐색
         dir = target_direction(info[0], info[1])
         nx, ny = info[0] + dirs[dir][0], info[1] + dirs[dir][1]
         # 2-1-2. 이동
         # 2-1-3. 출구에 도달한 경우
-        del information[info]
-        if [nx, ny] != exit : information[(nx, ny)] = True
+        if [nx, ny] != exit :
+            updated_information.append([nx, ny])
         # 2-1-4. 이동 거리 카운팅
         if dir : cnt += 1
+    information = updated_information[:]
 # 3. 미로 선정 함수 정의
 def find_maze() :
     # 3-1.
@@ -44,7 +46,7 @@ def find_maze() :
                 # 3-1-2. 출구가 포함되지 않았다면 continue
                 if r <= exit[0] <= er and c <= exit[1] <= ec :
                     # 3-1-3.
-                    for x, y in information.keys() :
+                    for x, y in information :
                         if r <= x <= er and c <= y <= ec :
                             # 참가자가 1명이라도 포함된 경우 l, r, c 반환
                             return l, r, c
@@ -56,7 +58,7 @@ def rotate() :
     l, r, c = find_maze()
     # 4-2. 회전
     sub_graph = [line[:] for line in graph]
-    sub_information = information.copy()
+    sub_information = information[:]
     for x in range(r, r+l+1) :
         for y in range(c, c+l+1) :
             ox, oy = x - r, y - c
@@ -69,11 +71,10 @@ def rotate() :
                 exit = [ex, ey]
                 state = True
             # 참가자 정보 업데이트
-            try :
-                if sub_information[(x, y)] :
-                    del information[(x, y)]
-                    information[(ex, ey)] = True
-            except : pass
+            for i, info in enumerate(sub_information) :
+                if info == [x, y] :
+                    information[i] = [ex, ey]
+
 if __name__ == "__main__" :
     n, m, k = map(int, input().split())
     dirs = [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -81,10 +82,10 @@ if __name__ == "__main__" :
     # 5. 그래프 생성
     graph = [list(map(int, input().split())) for _ in range(n)]
     # 6. 참가자 정보 딕셔너리 생성
-    information = {}
+    information = []
     for _ in range(m) :
         x, y = map(int, input().split())
-        information[(x-1, y-1)] = True
+        information.append([x-1, y-1])
     exit = list(map(int, input().split()))
     exit[0] -= 1
     exit[1] -= 1
