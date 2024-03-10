@@ -15,17 +15,19 @@ def calculate_dist(who) :
         if dist < update_dist :
             update_dist, update_dir = dist, dir
     # 1-3. 거리, 방향 반환
-    return update_dist, update_dir
+    return update_dir
 # 2. 루돌프 이동 함수 정의
 def move_roodolph() :
     global rr, rc
     # 2-1. 최종 이동 방향, 거리, 최종 타겟 인덱스 변수 생성
+    target = -1
     target_x, target_y = -1, -1
-    update_dist, update_dir = float("INF"), 0
-    # 2-2.
+    update_dist = float("INF")
+    # 2-2. 산타 타겟 설정
     for who in santa.keys() :
-        # 2-2-1. 거리, 방향 설정
-        dist, dir = calculate_dist(who)
+        x, y = santa[who]["idx"]
+        # 2-2-1. 거리 계산
+        dist = (rr - x)**2 + (rc - y)**2
         # 2-2-2. 거리 업데이트
         if dist <= update_dist :
             x, y = santa[who]["idx"]
@@ -33,20 +35,22 @@ def move_roodolph() :
             if dist == update_dist :
                 if target_x <= x :
                     if (target_x < x) or (target_x == x and target_y < y) :
+                        target = who
                         target_x, target_y = x, y
-                        update_dir = dir
             else :
+                target = who
                 target_x, target_y = x, y
                 update_dist = dist
-                update_dir = dir
-    # 2-3. 루돌프 이동
-    nrr, nrc = rr + dirs_r[update_dir][0], rc + dirs_r[update_dir][1]
-    # 2-4. 해당 위치에 산타가 있을 경우
+    # 2-3. 루돌프 이동 방향 설정
+    dir = calculate_dist(target)
+    # 2-4. 루돌프 이동
+    nrr, nrc = rr + dirs_r[dir][0], rc + dirs_r[dir][1]
+    # 2-5. 해당 위치에 산타가 있을 경우
     if graph[nrr][nrc] :
-        # 2-4-1. 산타 기절 업데이트
+        # 2-5-1. 산타 기절 업데이트
         santa[graph[nrr][nrc]]["faint_stack"] = 2
-        # 2-4-2. 충돌 시 산타 이동 함수 실행
-        smash("r2s", graph[nrr][nrc], update_dir)
+        # 2-5-2. 충돌 시 산타 이동 함수 실행
+        smash("r2s", graph[nrr][nrc], dir)
     graph[rr][rc] = 0
     graph[nrr][nrc] = -1
     rr, rc = nrr, nrc
