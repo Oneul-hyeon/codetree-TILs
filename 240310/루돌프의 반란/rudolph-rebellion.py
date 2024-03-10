@@ -131,20 +131,20 @@ def smash(way, who, dir) :
             leaving_out(who)
             # while문 탈출
             break
-        # 그래프 업데이트
+        # 5-5-3. 그래프 업데이트
         if who == next:
             graph[x][y] = 0
         else:
             graph[mx][my] = 0
-        # 5-5-3. 산타 정보 업데이트
+        # 5-5-4. 산타 정보 업데이트
         santa[who]["idx"] = [nx, ny]
-        # 5-5-4. 다른 산타가 있는 경우
+        # 5-5-5. 다른 산타가 있는 경우
         if graph[nx][ny] :
             # 다음 처리되어야 할 산타 지정
             next = graph[nx][ny]
             # 그래프 업데이트
             graph[nx][ny] = who
-        # 5-5-5. 다음 위치에 아무도 없는 경우
+        # 5-5-6. 다음 위치에 아무도 없는 경우
         else :
             # 그래프 업데이트
             graph[nx][ny] = who
@@ -159,7 +159,9 @@ def leaving_out(who) :
     del santa[who]
 # 7, 추가 점수 부여 함수 정의
 def give_extra_points() :
+    # 7-1.
     for who in santa.keys() :
+        # 추가 점수 부여
         santa[who]["score"] += 1
 
 if __name__ == "__main__" :
