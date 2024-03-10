@@ -76,27 +76,29 @@ def select_dir(who) :
 def move_santa() :
     # 4-1.
     for who in sorted(list(santa.keys())) :
-        # 4-1-1. 산타 기절 시 continue
-        if santa[who]["faint_stack"] :
-            santa[who]["faint_stack"] -= 1
-            continue
-        # 4-1-2. 산타 이동 방향 선정
-        dir = select_dir(who)
-        x, y = santa[who]["idx"]
-        if dir != -1 :
-            nx, ny = x + dirs_s[dir][0], y + dirs_s[dir][1]
-        else :
-            nx, ny = x, y
-        # 4-1-3. 이동 위치에 루돌프가 있는 경우
-        if (nx, ny) == (rr, rc) :
-            # 산타 기절 업데이트
-            santa[who]["faint_stack"] = 1
-            # 충돌 시 산타 이동 함수 실행
-            smash("s2r", who, dir)
-        # 4-1-4. 이외의 경우 산타 이동
-        else :
-            graph[x][y], graph[nx][ny] = 0, who
-            santa[who]["idx"] = [nx, ny]
+        try :
+            # 4-1-1. 산타 기절 시 continue
+            if santa[who]["faint_stack"] :
+                santa[who]["faint_stack"] -= 1
+                continue
+            # 4-1-2. 산타 이동 방향 선정
+            dir = select_dir(who)
+            x, y = santa[who]["idx"]
+            if dir != -1 :
+                nx, ny = x + dirs_s[dir][0], y + dirs_s[dir][1]
+            else :
+                nx, ny = x, y
+            # 4-1-3. 이동 위치에 루돌프가 있는 경우
+            if (nx, ny) == (rr, rc) :
+                # 산타 기절 업데이트
+                santa[who]["faint_stack"] = 1
+                # 충돌 시 산타 이동 함수 실행
+                smash("s2r", who, dir)
+            # 4-1-4. 이외의 경우 산타 이동
+            else :
+                graph[x][y], graph[nx][ny] = 0, who
+                santa[who]["idx"] = [nx, ny]
+        except : pass
 # 5. 충돌 시 산타 이동 함수 정의
 def smash(way, who, dir) :
     x, y = santa[who]["idx"]
