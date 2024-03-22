@@ -112,18 +112,17 @@ def checkmate() :
             else :
                 graph[(cx, cy)] = []
 
-# 3. 술래 이동 함수 정의
+# 6. 술래 이동 함수 정의
 def move_tagger() :
-    # 3-1. 술래 이동
+    # 6-1. 술래 이동
     mode_clockwise() if mode == "clockwise" else mode_counterclockwise()
-    # 3-2. 도망자 검거
+    # 6-2. 도망자 검거
     checkmate()
 
 if __name__ == "__main__" :
     n, m, h, k = map(int, input().split())
-
-    # 도망자 정보 딕셔너리 생성
-    # 그래프 내 도망자 정보 생성
+    # 7. 도망자 정보 딕셔너리 생성
+    # 8. 그래프 내 도망자 정보 생성
     information = {}
     graph = {}
     for i in range(1, n + 1) :
@@ -133,29 +132,29 @@ if __name__ == "__main__" :
         x, y, dir = map(int, input().split())
         information[idx] = {"location" : (x, y), "dir" : (0, 1)} if dir == 1 else {"location" : (x, y), "dir" : (1, 0)}
         graph[(x, y)].append(idx)
-    # 현재 남아있는 도망자 리스트 생성
+    # 9. 현재 남아있는 도망자 리스트 생성
     runaways = list(range(m))
-    # 나무 위치 정의
+    # 10. 나무 위치 정의
     trees = {}
     for _ in range(h) :
         trees[tuple(map(int, input().split()))] = True
-    # 술래 위치 정의
+    # 11. 술래 위치 정의
     tagger_x, tagger_y = n // 2 + 1, n // 2 + 1
-    # 술래 방향 변수 생성
+    # 12. 술래 방향 변수 생성
     tagger_dir = 0
-    # 술래 회전 방향 변수 생성
+    # 13. 술래 회전 방향 변수 생성
     mode = "clockwise"
     dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)]
-    # 시계 방향 이동 시
+    # 14. 시계 방향 이동 시
     cnt, rotate_cnt, how = 0, 2, 1
-
     score = 0
+    # 15.
     for round in range(1, k+1) :
-        # 도망자 이동
+        # 15-1. 도망자 이동
         move_runaway()
-        # 술래 이동
+        # 15-2. 술래 이동
         move_tagger()
-        # 도망자가 없을 경우 탈출
+        # 15-3. 도망자가 없을 경우 탈출
         if not runaways : break
-    # 결과 출력
+    # 16. 결과 출력
     print(score)
