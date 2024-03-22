@@ -93,7 +93,7 @@ def mode_counterclockwise() :
 def checkmate() :
     global score
     # 5-1.
-    for i in range(1, 4) :
+    for i in range(3) :
         # 5-1-1. 시야 인덱스 설정
         cx, cy = tagger_x + dirs[tagger_dir][0] * i, tagger_y + dirs[tagger_dir][1] * i
         # 5-1-2. 맵을 벗어나는 경우
