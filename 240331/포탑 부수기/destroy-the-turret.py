@@ -98,8 +98,8 @@ def laser_attack_range(attacker, target) :
             if graph[nx][ny] and (nx, ny) not in route :
                 # 큐에 경로 삽입
                 queue.append((route + [(nx, ny)]))
-    # 3-3. False 반환
-    return False
+    # 3-3. None 반환
+    return None
 # 4. 포탄 공격 범위 함수
 def shell_attack_range(attacker, target) :
     x, y = target[0], target[1]
@@ -117,7 +117,7 @@ def attack(attacker, target) :
     power = turret[attacker]["power"]
     # 5-2. 공격 범위 지정(타겟 제외)
     attack_range = laser_attack_range(attacker, target)
-    if not attack_range : attack_range = shell_attack_range(attacker, target)
+    if attack_range == None : attack_range = shell_attack_range(attacker, target)
     # 5-3.
     for x, y in attack_range :
         # 5-3-1. 공격
@@ -172,9 +172,10 @@ if __name__ == "__main__" :
         attack_range = attack(attacker, target)
         # 8-6. 포탑 정비
         turret_maintenance(attacker, target, attack_range)
-        # 8-7. 포탑이 1개 남은 경우 for문 탈출
+        # 8-6. 포탑이 1개 남은 경우 for문 탈출
         if len(turret.keys()) == 1 : break
     # 9. 결과 출력
     ans = -int(1e9)
-    for info in turret.values() : ans = max(ans, info["power"])
+    for info in turret.values() :
+        ans = max(ans, info["power"])
     print(ans)
