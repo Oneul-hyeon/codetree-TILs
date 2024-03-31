@@ -86,7 +86,7 @@ def laser_attack_range(attacker, target) :
     queue = deque()
     queue.append((x, y))
     # 3-2. 경로 추적 리스트 생성
-    route = [[False for _ in range(m)] for _ in range(m)]
+    route = [[False for _ in range(m)] for _ in range(n)]
     # 3-2.
     while queue :
         # 3-2-1. 위치 인덱스 반환
