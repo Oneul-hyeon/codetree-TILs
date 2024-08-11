@@ -1,4 +1,5 @@
 import sys
+input = sys.stdin.readline
 
 # 1. 전체 나무 성장 함수 정의
 def grow() :
@@ -59,7 +60,7 @@ def select_index() :
     # 3-1. 선정 위치 변수 생성
     final_x = final_y = 0
     # 3-2. 박멸되는 나무 수 생성
-    max_remove_cnt = -int(1e9)
+    max_remove_cnt = 0
     # 3-3. 제초제 살포 위치 리스트 생성
     final_herbicide_index = []
     # 3-4.
